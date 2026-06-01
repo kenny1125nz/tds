@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDS Toolkit & Wheel</title>
+
+    <link rel="icon" type="image/png" href="TDS.png?v=1">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="chrome-tab-bar">
+        <button class="chrome-tab active" id="tab-wheel" onclick="switchAppTab('wheel')">🎡 Wheel Spinner</button>
+        <button class="chrome-tab" id="tab-dps" onclick="switchAppTab('dps')">⚔️ DPS & Efficiency</button>
+        <button class="chrome-tab" id="tab-tree" onclick="switchAppTab('tree')">🌳 Skill Tree Tool</button>
+    </div>
+
+    <div id="view-wheel" class="content-view wheel-container" style="display: flex;">
+        <div class="wheel-section">
+            <h1 id="title">🎡 TDS Map Wheel</h1>
+            <canvas id="wheel" width="600" height="600"></canvas>
+
+            <div class="button-group">
+                <button id="spinBtn" class="action-btn">🎲 Spin Map</button>
+                <button id="skipBtn" class="action-btn" style="display:none;">Skip Animation ⚡</button>
+            </div>
+
+            <div id="result"></div>
+            <div id="summary"></div>
+        </div>
+
+        <div class="shelf-section">
+            <h2>🏆 Latest Setup Shelf</h2>
+            <div class="shelf-row" id="shelf-map">
+                <div class="shelf-label">🗺️ Selected Map</div>
+                <div class="shelf-content" id="shelfMapContent">None Yet</div>
+            </div>
+            <div class="shelf-row" id="shelf-mode">
+                <div class="shelf-label">🎮 Gamemode</div>
+                <div class="shelf-content" id="shelfModeContent">None Yet</div>
+            </div>
+            <div class="shelf-row" id="shelf-mods">
+                <div class="shelf-label">⚠️ Active Modifiers</div>
+                <div class="shelf-content" id="shelfModsContent">None Yet</div>
+            </div>
+            <div class="shelf-row" id="shelf-towers">
+                <div class="shelf-label">🛡️ Defending Deck</div>
+                <div class="shelf-content" id="shelfTowersContent">None Yet</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-dps" class="content-view calc-panel">
+        <h2>⚔️ DPS & Cost Efficiency Calculator</h2>
+        <p style="font-size:13px; color:#64748b; margin-top:-10px; margin-bottom:25px;">Calculate exact performance
+            metrics for your towers.</p>
+
+        <div class="input-group">
+            <label>Damage Per Shot</label>
+            <input type="number" id="calc-damage" value="15" oninput="calculateTowerMetrics()">
+        </div>
+        <div class="input-group">
+            <label>Fire Rate / Cooldown (Seconds)</label>
+            <input type="number" id="calc-firerate" value="0.5" step="0.05" oninput="calculateTowerMetrics()">
+        </div>
+        <div class="input-group">
+            <label>Total Tower Upgrade / Placement Cost ($)</label>
+            <input type="number" id="calc-cost" value="2500" oninput="calculateTowerMetrics()">
+        </div>
+
+        <div class="calc-results">
+            <strong>📈 Tower Analytics Output:</strong>
+            <div style="margin-top: 12px;">Raw DPS output: <span id="res-dps"
+                    style="color:#1a73e8; font-weight:bold;">30.00</span></div>
+            <div style="margin-top: 8px;">Cost Efficiency Index: <span id="res-efficiency"
+                    style="color:#16a34a; font-weight:bold;">$83.33</span> per 1 DPS</div>
+        </div>
+    </div>
+
+    <div id="view-tree" class="content-view calc-panel">
+        <h2>🌳 TDS Skill Tree Tool</h2>
+        <p style="font-size:13px; color:#64748b; margin-top:-10px; margin-bottom:20px;">Experiment with talent upgrades
+            using exact coin values from your layout.</p>
+
+        <div class="tree-dashboard">
+            <div class="wallet-input-zone">
+                🪙 Starting Coins:
+                <input type="number" id="tree-start-coins" value="50000" oninput="updateCoinsWallet()">
+            </div>
+            <div class="wallet-balance-zone">
+                Remaining Balance: <span id="tree-remaining-coins">50000</span>
+            </div>
+            <button class="action-btn"
+                style="background:#475569; padding: 8px 16px; font-size:13px; box-shadow:none; margin:0;"
+                onclick="resetSkillTree()">Reset All</button>
+        </div>
+
+        <div class="tree-grid">
+            <div class="tree-branch branch-green">
+                <div class="branch-title" style="color: #16a34a;">🟢 Utility & Economy</div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Resourcefulness</div>
+                        <div class="skill-cap">Rank <span id="rank-resource">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-resource">Next Rank: 10 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('resource', -1)">-</button><span
+                            class="skill-val" id="val-resource">0</span><button
+                            onclick="adjustPerk('resource', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Bigger Budget</div>
+                        <div class="skill-cap">Rank <span id="rank-budget">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-budget">Next Rank: 10 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('budget', -1)">-</button><span
+                            class="skill-val" id="val-budget">0</span><button
+                            onclick="adjustPerk('budget', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Stonks</div>
+                        <div class="skill-cap">Rank <span id="rank-stonks">0</span> / 20</div>
+                        <div class="skill-cost" id="cost-lbl-stonks">Next Rank: 30 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('stonks', -1)">-</button><span
+                            class="skill-val" id="val-stonks">0</span><button
+                            onclick="adjustPerk('stonks', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Scavenger</div>
+                        <div class="skill-cap">Rank <span id="rank-scavenger">0</span> / 20</div>
+                        <div class="skill-cost" id="cost-lbl-scavenger">Next Rank: 35 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('scavenger', -1)">-</button><span
+                            class="skill-val" id="val-scavenger">0</span><button
+                            onclick="adjustPerk('scavenger', 1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="tree-branch branch-blue">
+                <div class="branch-title" style="color: #2563eb;">🔵 Defense & Vitality</div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Fortify</div>
+                        <div class="skill-cap">Rank <span id="rank-fortify">0</span> / 50</div>
+                        <div class="skill-cost" id="cost-lbl-fortify">Next Rank: 400 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('fortify', -1)">-</button><span
+                            class="skill-val" id="val-fortify">0</span><button
+                            onclick="adjustPerk('fortify', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Over-Heal</div>
+                        <div class="skill-cap">Rank <span id="rank-overheal">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-overheal">Next Rank: 600 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('overheal', -1)">-</button><span
+                            class="skill-val" id="val-overheal">0</span><button
+                            onclick="adjustPerk('overheal', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Bandages</div>
+                        <div class="skill-cap">Rank <span id="rank-bandages">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-bandages">Next Rank: 500 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('bandages', -1)">-</button><span
+                            class="skill-val" id="val-bandages">0</span><button
+                            onclick="adjustPerk('bandages', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Extreme Conditioning</div>
+                        <div class="skill-cap">Rank <span id="rank-cond">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-cond">Next Rank: 750 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('cond', -1)">-</button><span
+                            class="skill-val" id="val-cond">0</span><button onclick="adjustPerk('cond', 1)">+</button>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Beefed Up Minions</div>
+                        <div class="skill-cap">Rank <span id="rank-minions">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-minions">Next Rank: 900 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('minions', -1)">-</button><span
+                            class="skill-val" id="val-minions">0</span><button
+                            onclick="adjustPerk('minions', 1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="tree-branch branch-red">
+                <div class="branch-title" style="color: #dc2626;">🔴 Offense & Weaponry</div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Enhanced Optics</div>
+                        <div class="skill-cap">Rank <span id="rank-optics">0</span> / 20</div>
+                        <div class="skill-cost" id="cost-lbl-optics">Next Rank: 1,500 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('optics', -1)">-</button><span
+                            class="skill-val" id="val-optics">0</span><button
+                            onclick="adjustPerk('optics', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Fight Dirty</div>
+                        <div class="skill-cap">Rank <span id="rank-fightdirty">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-fightdirty">Next Rank: 1,100 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('fightdirty', -1)">-</button><span
+                            class="skill-val" id="val-fightdirty">0</span><button
+                            onclick="adjustPerk('fightdirty', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Improved Gunpowder</div>
+                        <div class="skill-cap">Rank <span id="rank-gunpowder">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-gunpowder">Next Rank: 1,300 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('gunpowder', -1)">-</button><span
+                            class="skill-val" id="val-gunpowder">0</span><button
+                            onclick="adjustPerk('gunpowder', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Precision</div>
+                        <div class="skill-cap">Rank <span id="rank-precision">0</span> / 15</div>
+                        <div class="skill-cost" id="cost-lbl-precision">Next Rank: 2,500 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('precision', -1)">-</button><span
+                            class="skill-val" id="val-precision">0</span><button
+                            onclick="adjustPerk('precision', 1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="tree-branch branch-purple">
+                <div class="branch-title" style="color: #9333ea;">🟣 Training & Logistics</div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Accelerator</div>
+                        <div class="skill-cap">Rank <span id="rank-accelerator">0</span> / 25</div>
+                        <div class="skill-cost" id="cost-lbl-accelerator">Next Rank: 950 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('accelerator', -1)">-</button><span
+                            class="skill-val" id="val-accelerator">0</span><button
+                            onclick="adjustPerk('accelerator', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Scholar</div>
+                        <div class="skill-cap">Rank <span id="rank-scholar">0</span> / 20</div>
+                        <div class="skill-cost" id="cost-lbl-scholar">Next Rank: 1,800 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('scholar', -1)">-</button><span
+                            class="skill-val" id="val-scholar">0</span><button
+                            onclick="adjustPerk('scholar', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Expanded Barracks</div>
+                        <div class="skill-cap">Rank <span id="rank-barracks">0</span> / 20</div>
+                        <div class="skill-cost" id="cost-lbl-barracks">Next Rank: 2,000 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('barracks', -1)">-</button><span
+                            class="skill-val" id="val-barracks">0</span><button
+                            onclick="adjustPerk('barracks', 1)">+</button></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-meta">
+                        <div class="skill-name">Re-enforcements</div>
+                        <div class="skill-cap">Rank <span id="rank-reinf">0</span> / 10</div>
+                        <div class="skill-cost" id="cost-lbl-reinf">Next Rank: 4,500 🪙</div>
+                    </div>
+                    <div class="skill-actions"><button onclick="adjustPerk('reinf', -1)">-</button><span
+                            class="skill-val" id="val-reinf">0</span><button onclick="adjustPerk('reinf', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,442 @@
+/* ============================================================
+   TDS Toolkit & Wheel - Styles
+   ============================================================ */
+
+/* --- Base / Body --- */
+body {
+    background: #f0f4f8;
+    color: #1e293b;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 40px 0;
+    margin: 0;
+}
+
+/* --- Full-width Tab Bar --- */
+.chrome-tab-bar {
+    display: flex;
+    background: #dfe1e5;
+    padding: 8px 16px 0 16px;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 4px;
+    border-bottom: 1px solid #cbd5e1;
+    margin-bottom: 30px;
+}
+
+.chrome-tab {
+    background: transparent;
+    color: #5f6368;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s, color 0.2s;
+}
+
+.chrome-tab:hover {
+    background: rgba(255, 255, 255, 0.4);
+    color: #3c4043;
+}
+
+.chrome-tab.active {
+    background: #f0f4f8;
+    color: #1a73e8;
+    font-weight: bold;
+    border: 1px solid #cbd5e1;
+    border-bottom: none;
+    margin-bottom: -1px;
+    z-index: 2;
+}
+
+/* --- Content Views --- */
+.content-view {
+    display: none;
+    width: 100%;
+    max-width: 1050px;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+
+/* --- Wheel View Container --- */
+.wheel-container {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+/* Mobile: stack wheel and shelf vertically */
+@media (max-width: 768px) {
+    .wheel-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    #wheel {
+        max-width: 100%;
+        height: auto;
+        width: auto;
+    }
+
+    .shelf-section {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .chrome-tab-bar {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding: 8px 8px 0 8px;
+        gap: 2px;
+    }
+
+    .chrome-tab {
+        padding: 10px 14px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .calc-panel {
+        padding: 20px 15px;
+    }
+
+    .content-view {
+        padding: 0 10px;
+    }
+}
+
+.wheel-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+#wheel {
+    background: #ffffff;
+    border-radius: 50%;
+    outline: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.button-group {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* --- Action Buttons --- */
+.action-btn {
+    background: #d93838;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(217, 56, 56, 0.3);
+    transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.action-btn:active {
+    transform: translateY(1px);
+}
+
+#skipBtn {
+    background: #f43f5e;
+    box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3);
+}
+
+/* --- Result & Summary --- */
+#result,
+#summary {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* --- Shelf Section --- */
+.shelf-section {
+    width: 380px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.shelf-section h2 {
+    margin-top: 0;
+    font-size: 20px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.shelf-row {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-top: 15px;
+    border-left: 5px solid #64748b;
+}
+
+#shelf-map {
+    border-left-color: #0ea5e9;
+}
+
+#shelf-mode {
+    border-left-color: #a855f7;
+}
+
+#shelf-mods {
+    border-left-color: #f59e0b;
+}
+
+#shelf-towers {
+    border-left-color: #10b981;
+}
+
+.shelf-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.shelf-content {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* --- Universal Panel Layout for Calculators --- */
+.calc-panel {
+    max-width: 850px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #475569;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+    background: #f8fafc;
+}
+
+.calc-results {
+    background: #f1f5f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1a73e8;
+    margin-top: 25px;
+    font-size: 16px;
+}
+
+/* --- Skill Tree Dashboard --- */
+.tree-dashboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    font-weight: bold;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.wallet-input-zone {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: #0369a1;
+}
+
+.wallet-input-zone input {
+    width: 120px;
+    padding: 6px 10px;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    color: #0c4a6e;
+}
+
+.wallet-balance-zone {
+    font-size: 16px;
+    color: #047857;
+    background: #d1fae5;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #a7f3d0;
+}
+
+/* --- Tree Grid --- */
+.tree-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .tree-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tree-branch {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.branch-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* --- Skill Card --- */
+.skill-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-left: 6px solid #64748b;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    transition: box-shadow 0.2s;
+}
+
+.skill-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.branch-green .skill-card {
+    border-left-color: #22c55e;
+}
+
+.branch-blue .skill-card {
+    border-left-color: #3b82f6;
+}
+
+.branch-red .skill-card {
+    border-left-color: #ef4444;
+}
+
+.branch-purple .skill-card {
+    border-left-color: #a855f7;
+}
+
+.skill-meta {
+    flex: 1;
+    padding-right: 15px;
+}
+
+.skill-name {
+    font-weight: bold;
+    font-size: 15px;
+    color: #0f172a;
+    margin-bottom: 1px;
+}
+
+.skill-cap {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.skill-cost {
+    font-size: 12px;
+    font-weight: bold;
+    color: #b45309;
+}
+
+.skill-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.skill-actions button {
+    background: #e2e8f0;
+    border: none;
+    color: #334155;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s;
+}
+
+.skill-actions button:hover {
+    background: #cbd5e1;
+}
+
+.skill-actions button:active {
+    transform: scale(0.95);
+}
+
+.skill-val {
+    font-size: 15px;
+    font-weight: bold;
+    min-width: 24px;
+    text-align: center;
+}
